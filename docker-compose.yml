@@ -1,0 +1,24 @@
+version: '3.7'
+services:
+  app: &app-base
+    build:
+      context: .
+    command: ["cat"]
+    environment:
+      REDIS_URL: redis://redis:6379/0/session
+      JWT_SECRET: test
+    depends_on:
+      - redis
+    links:
+      - redis
+
+  app-local:
+    <<: *app-base
+    profiles: ["local"]
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/app:delegated
+
+  redis:
+    image: redis:6.0.9-alpine

@@ -1,0 +1,27 @@
+name: Build
+on:
+  push:
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build image
+        run: |
+          docker build "."
+
+      - run: make test
+      - run: make rubocop
+      - run: make fasterer
+      - run: make bundle-audit
