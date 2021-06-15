@@ -13,4 +13,17 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+
+  config.before(:each) do
+    AccountsSession.configure do |config|
+      config.jwt_token_secret = "secret"
+      config.redis_instance = Redis.new
+      config.session_key_prefix = "accounts:session:"
+    end
+  end
+
+  config.after(:each) do
+    AccountsSession.reset
+  end
+
 end
