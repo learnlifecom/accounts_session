@@ -12,6 +12,8 @@ require "accounts_session/decoders/jwt_token"
 module AccountsSession
   class Error < StandardError; end
 
+  NULL_SESSION = Session.new
+
   class << self
     def configuration
       @configuration ||= Configuration.new
@@ -30,6 +32,8 @@ module AccountsSession
     end
 
     def from_token(token)
+      return NULL_SESSION if token.nil?
+
       decoded = AccountsSession::Decoders::JwtToken.decode(token)
       flattened = decoded.merge(decoded.fetch("account"))
 

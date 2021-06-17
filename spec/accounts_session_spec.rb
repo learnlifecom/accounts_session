@@ -78,6 +78,20 @@ RSpec.describe AccountsSession do
       described_class.from_token(jwt_token)
     end
 
+    context "when token is nil" do
+      let(:jwt_token) { nil }
+
+      it "returns null session" do
+        expect(subject.session_id).to be_nil
+        expect(subject.uuid).to be_nil
+        expect(subject.first_name).to be_nil
+        expect(subject.last_name).to be_nil
+        expect(subject.email).to be_nil
+        expect(subject.avatar_url).to be_nil
+        expect(subject).not_to be_authenticated
+      end
+    end
+
     it "builds session object" do
       expect(subject).to be_a(AccountsSession::Session)
     end
