@@ -32,7 +32,7 @@ module AccountsSession
     end
 
     def from_token(token)
-      return NULL_SESSION if token.nil?
+      return NULL_SESSION unless token
 
       decoded = AccountsSession::Decoders::JwtToken.decode(token)
       flattened = decoded.merge(decoded.fetch("account"))
